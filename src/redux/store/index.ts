@@ -9,6 +9,7 @@ import rootSaga from '../sagas/index.ts';
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: ['home'],
 };
 
 const rootReducer = createReducer();

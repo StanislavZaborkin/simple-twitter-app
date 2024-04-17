@@ -1,9 +1,11 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { Post } from '../../../types/post.ts';
+import { Post } from '../../../interfaces/post.ts';
 
 export interface HomeSliceState {
   posts: Post[];
+  skip: number;
+  total: number;
   loading: boolean;
 }
 
@@ -15,6 +17,8 @@ export interface GetPostsResponse {
 }
 
 const initialState: HomeSliceState = {
+  skip: 0,
+  total: 0,
   posts: [],
   loading: false,
 };
@@ -27,7 +31,9 @@ export const homeSlice = createSlice({
       state.loading = true;
     },
     getPostsSuccess(state, action: PayloadAction<GetPostsResponse>) {
-      state.posts = action.payload.posts;
+      state.posts = [...state.posts, ...action.payload.posts];
+      state.total = action.payload.total;
+      state.skip = state.posts.length;
       state.loading = false;
     },
     getPostsError(state) {
@@ -37,10 +43,13 @@ export const homeSlice = createSlice({
   selectors: {
     selectPosts: (auth) => auth.posts,
     selectLoading: (auth) => auth.loading,
+    selectSkip: (auth) => auth.skip,
+    selectTotal: (auth) => auth.total,
   },
 });
 
 export const { getPostsRequest, getPostsError, getPostsSuccess } =
   homeSlice.actions;
 
-export const { selectPosts, selectLoading } = homeSlice.selectors;
+export const { selectPosts, selectLoading, selectSkip, selectTotal } =
+  homeSlice.selectors;

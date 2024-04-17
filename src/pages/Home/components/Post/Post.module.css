@@ -1,0 +1,22 @@
+.body {
+    height: 78px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+.post {
+    width: 600px;
+    height: 184px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    border: 1px solid black;
+}
+
+.bottomContent {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+}

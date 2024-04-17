@@ -7,20 +7,17 @@ import {
   getPostsError,
   getPostsRequest,
   GetPostsResponse,
+  selectSkip,
 } from '../slices';
-import { User } from '../../../types/user.ts';
-import showAlert from '../../../services/showAlert.tsx';
-import { selectUser } from '../../Login/slices';
 
 function* getPosts(): Generator {
   try {
-    const user = (yield select(selectUser)) as User;
-    const result = (yield call(API.getPosts, user.id)) as GetPostsResponse;
+    const skip = (yield select(selectSkip)) as number;
+    const result = (yield call(API.getPosts, skip)) as GetPostsResponse;
     yield put(getPostsSuccess(result));
   } catch (e) {
     yield put(getPostsError());
     console.error(e);
-    showAlert({ text: 'Username or password is incorrect', type: 'error' });
   }
 }
 

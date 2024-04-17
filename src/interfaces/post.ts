@@ -3,4 +3,6 @@ export interface Post {
   title: string;
   reactions: number;
   userId: number;
+  body: string;
+  tags: string[];
 }

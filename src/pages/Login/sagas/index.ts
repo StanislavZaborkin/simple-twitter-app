@@ -4,7 +4,7 @@ import * as API from '../api';
 
 import { loginRequest, loginError, loginSuccess } from '../slices';
 import { setToken } from '../../../api';
-import { User } from '../../../types/user.ts';
+import { User } from '../../../interfaces/user.ts';
 import showAlert from '../../../services/showAlert.tsx';
 
 function* login(action: ReturnType<typeof loginRequest>): Generator {

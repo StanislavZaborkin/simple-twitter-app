@@ -1,4 +1,4 @@
-import { User } from '../../../types/user';
+import { User } from '../../../interfaces/user';
 import { spost } from '../../../api';
 import { AuthLogin } from '../slices';
 
