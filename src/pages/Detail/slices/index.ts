@@ -27,6 +27,9 @@ export const detailSlice = createSlice({
     getPostError(state) {
       state.loading = false;
     },
+    clearPost() {
+      return initialState;
+    },
   }),
   selectors: {
     selectLoading: (auth) => auth.loading,
@@ -39,7 +42,7 @@ export const detailSlice = createSlice({
   },
 });
 
-export const { getPostRequest, getPostError, getPostSuccess } =
+export const { getPostRequest, getPostError, getPostSuccess, clearPost } =
   detailSlice.actions;
 
 export const { selectLoading, selectPost } = detailSlice.selectors;

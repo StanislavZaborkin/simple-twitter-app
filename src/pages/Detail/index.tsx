@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 
-import { getPostRequest, selectLoading, selectPost } from './slices';
+import { clearPost, getPostRequest, selectLoading, selectPost } from './slices';
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
@@ -20,6 +20,10 @@ const DetailPage = () => {
     if (!id) return;
 
     dispatch(getPostRequest(+id));
+
+    return () => {
+      dispatch(clearPost());
+    };
   }, [id]);
 
   return (
@@ -30,7 +34,7 @@ const DetailPage = () => {
         <h3>{post.title}</h3>
         <p>{post.body}</p>
         <div style={{ display: 'flex' }}>
-          <FavoriteIcon sx={{ marginRight: '5px' }} />
+          {post.reactions && <FavoriteIcon sx={{ marginRight: '5px' }} />}
           {post.reactions}
         </div>
         <div>
