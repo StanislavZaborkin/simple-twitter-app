@@ -1,6 +1,6 @@
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Post } from '../../../interfaces/post.ts';
+import { logout } from '../../Login/slices';
 
 export interface HomeSliceState {
   posts: Post[];
@@ -45,6 +45,11 @@ export const homeSlice = createSlice({
     selectLoading: (auth) => auth.loading,
     selectSkip: (auth) => auth.skip,
     selectTotal: (auth) => auth.total,
+  },
+  extraReducers: (builder) => {
+    builder.addCase(logout, () => {
+      return initialState;
+    });
   },
 });
 

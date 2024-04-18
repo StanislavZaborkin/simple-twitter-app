@@ -1,22 +1,27 @@
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import React, { useEffect } from 'react';
+
+import { Index, InfiniteLoader, List, ListRowProps } from 'react-virtualized';
+
+import PostCard from './components/PostCard';
+import LoaderSpinner from '../../components/LoaderSpinner';
+
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+
 import {
   getPostsRequest,
   selectLoading,
   selectPosts,
   selectTotal,
 } from './slices';
-import { Index, InfiniteLoader, List, ListRowProps } from 'react-virtualized';
-import PostItem from './components/Post';
+
 import { Post } from '../../interfaces/post.ts';
 
 import styles from './Home.module.css';
-import { CircularProgress } from '@mui/material';
 
 const Row = ({ style, post }: { style: React.CSSProperties; post: Post }) => {
   return (
     <div style={style}>
-      <PostItem post={post} />
+      <PostCard post={post} />
     </div>
   );
 };
@@ -47,11 +52,7 @@ const HomePage = () => {
   return (
     <div className={styles.homeWrapper}>
       <div className={styles.list}>
-        {loading ? (
-          <div className={styles.loading}>
-            <CircularProgress />
-          </div>
-        ) : null}
+        <LoaderSpinner show={loading} />
         <InfiniteLoader
           threshold={20}
           isRowLoaded={isRowLoaded}
@@ -66,7 +67,7 @@ const HomePage = () => {
               rowCount={posts.length}
               rowRenderer={rowRenderer}
               onRowsRendered={onRowsRendered}
-              height={window.innerHeight - 100}
+              height={window.innerHeight - 50}
             />
           )}
         </InfiniteLoader>

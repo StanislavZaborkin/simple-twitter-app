@@ -1,5 +1,4 @@
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { createSlice } from '@reduxjs/toolkit';
+import { createAction, PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { User } from '../../../interfaces/user.ts';
 
 export interface AuthSliceState {
@@ -19,6 +18,8 @@ const initialState: AuthSliceState = {
   loading: false,
 };
 
+export const logout = createAction('auth/logout');
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -34,20 +35,20 @@ export const authSlice = createSlice({
     loginError(state) {
       state.loading = false;
     },
-    logout(state) {
-      state.user = {} as User;
-      state.loggedIn = false;
-    },
   }),
   selectors: {
     selectUser: (auth) => auth.user,
     selectLoggedIn: (auth) => auth.loggedIn,
     selectLoading: (auth) => auth.loading,
   },
+  extraReducers: (builder) => {
+    builder.addCase(logout, () => {
+      return initialState;
+    });
+  },
 });
 
-export const { loginRequest, loginSuccess, loginError, logout } =
-  authSlice.actions;
+export const { loginRequest, loginSuccess, loginError } = authSlice.actions;
 
 export const { selectUser, selectLoggedIn, selectLoading } =
   authSlice.selectors;
