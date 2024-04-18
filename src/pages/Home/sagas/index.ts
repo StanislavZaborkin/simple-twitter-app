@@ -13,6 +13,7 @@ import {
 function* getPosts(): Generator {
   try {
     const skip = (yield select(selectSkip)) as number;
+    // yield returns unknown type, so we need to cast it to GetPostsResponse
     const result = (yield call(API.getPosts, skip)) as GetPostsResponse;
     yield put(getPostsSuccess(result));
   } catch (e) {

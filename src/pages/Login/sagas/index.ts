@@ -9,9 +9,12 @@ import showAlert from '../../../services/showAlert';
 
 function* login(action: ReturnType<typeof loginRequest>): Generator {
   try {
-    const result = (yield call(API.login, action.payload)) as User;
+    const { username, password, callback } = action.payload;
+    // yield returns unknown type, so we need to cast it to User
+    const result = (yield call(API.login, { username, password })) as User;
     setToken(result.token);
     yield put(loginSuccess(result));
+    callback();
   } catch (e) {
     yield put(loginError());
     console.error(e);

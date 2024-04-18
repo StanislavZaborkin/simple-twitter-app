@@ -31,8 +31,7 @@ const setUpStore = () => {
       }).concat(middlewares);
     },
     // Turn off devtools in production
-    // devTools: import.meta.env.DEV,
-    devTools: true,
+    devTools: import.meta.env.DEV,
   });
 
   sagaMiddleware.run(rootSaga);

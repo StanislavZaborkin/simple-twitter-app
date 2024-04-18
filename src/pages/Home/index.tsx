@@ -8,15 +8,20 @@ import LoaderSpinner from '../../components/LoaderSpinner';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 
 import {
+  clearState,
   getPostsRequest,
   selectLoading,
   selectPosts,
   selectTotal,
 } from './slices';
 
+import { FOOTER_HEIGHT } from '../../constants/ui.ts';
+
 import { Post } from '../../interfaces/post.ts';
 
 import styles from './Home.module.css';
+
+const PADDING_TOP = 20;
 
 const Row = ({ style, post }: { style: React.CSSProperties; post: Post }) => {
   return (
@@ -34,6 +39,10 @@ const HomePage = () => {
 
   useEffect(() => {
     dispatch(getPostsRequest());
+
+    return () => {
+      dispatch(clearState());
+    };
   }, []);
 
   const rowRenderer = ({ key, index, style }: ListRowProps) => {
@@ -45,8 +54,10 @@ const HomePage = () => {
   }
 
   const loadMoreRows = () => {
-    if (loading || posts.length === total) return;
+    // we have to return a promise here, because it is required by InfiniteLoader
+    if (loading || posts.length === total) return Promise.resolve();
     dispatch(getPostsRequest());
+    return Promise.resolve();
   };
 
   return (
@@ -54,9 +65,7 @@ const HomePage = () => {
       <div className={styles.list}>
         <LoaderSpinner show={loading} />
         <InfiniteLoader
-          threshold={20}
           isRowLoaded={isRowLoaded}
-          // @ts-ignore
           loadMoreRows={loadMoreRows}
           rowCount={total}>
           {({ onRowsRendered, registerChild }) => (
@@ -67,7 +76,7 @@ const HomePage = () => {
               rowCount={posts.length}
               rowRenderer={rowRenderer}
               onRowsRendered={onRowsRendered}
-              height={window.innerHeight - 50}
+              height={window.innerHeight - FOOTER_HEIGHT - PADDING_TOP}
             />
           )}
         </InfiniteLoader>

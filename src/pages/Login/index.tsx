@@ -1,30 +1,40 @@
-import { AuthLogin, loginRequest, selectLoading } from './slices';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import styles from './Login.module.css';
 import { TextField } from '@mui/material';
+import { useNavigate } from 'react-router';
 import LoadingButton from '@mui/lab/LoadingButton';
+
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+
+import { AuthLogin, loginRequest, selectLoading } from './slices';
+
+import loginValidationSchema from './schemas/loginValidationSchema.ts';
+
+import { ROUTES } from '../../constants/routes.ts';
+
+import styles from './Login.module.css';
 
 const initialValues: AuthLogin = { username: '', password: '' };
 
-const validationSchema = Yup.object({
-  username: Yup.string().required('Username is required'),
-  password: Yup.string().required('Password is required'),
-});
-
 const LoginPage = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const loading = useAppSelector(selectLoading);
 
   const onSubmit = (v: AuthLogin) => {
-    dispatch(loginRequest(v));
+    dispatch(
+      loginRequest({
+        ...v,
+        callback: () => {
+          navigate(ROUTES.HOME);
+        },
+      }),
+    );
   };
 
   const formik = useFormik({
-    initialValues,
-    validationSchema,
     onSubmit,
+    initialValues,
+    validationSchema: loginValidationSchema,
   });
 
   return (
@@ -55,7 +65,7 @@ const LoginPage = () => {
           helperText={formik.touched.password && formik.errors.password}
         />
         <LoadingButton variant="outlined" type="submit" loading={loading}>
-          Submit
+          Login
         </LoadingButton>
       </form>
     </div>

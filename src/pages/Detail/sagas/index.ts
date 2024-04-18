@@ -8,6 +8,7 @@ import { Post } from '../../../interfaces/post.ts';
 
 function* getPost(action: ReturnType<typeof getPostRequest>): Generator {
   try {
+    // yield returns unknown type, so we need to cast it to Post
     const result = (yield call(API.getPostById, action.payload)) as Post;
     yield put(getPostSuccess(result));
   } catch (e) {

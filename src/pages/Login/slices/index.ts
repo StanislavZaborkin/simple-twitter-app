@@ -12,6 +12,10 @@ export interface AuthLogin {
   password: string;
 }
 
+interface AuthLoginRequest extends AuthLogin {
+  callback: () => void;
+}
+
 const initialState: AuthSliceState = {
   user: {} as User,
   loggedIn: false,
@@ -24,7 +28,7 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: () => ({
-    loginRequest(state, _action: PayloadAction<AuthLogin>) {
+    loginRequest(state, _action: PayloadAction<AuthLoginRequest>) {
       state.loading = true;
     },
     loginSuccess(state, action: PayloadAction<User>) {

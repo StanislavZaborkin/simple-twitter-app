@@ -3,15 +3,17 @@ import { useParams } from 'react-router';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 
-import { getPostRequest, selectPost } from './slices';
+import { getPostRequest, selectLoading, selectPost } from './slices';
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import styles from './Detail.module.css';
+import LoaderSpinner from '../../components/LoaderSpinner';
 
 const DetailPage = () => {
   const { id } = useParams();
   const post = useAppSelector(selectPost);
+  const loading = useAppSelector(selectLoading);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -22,6 +24,8 @@ const DetailPage = () => {
 
   return (
     <div className={styles.detailWrapper}>
+      <LoaderSpinner show={loading} />
+
       <div className={styles.post}>
         <h3>{post.title}</h3>
         <p>{post.body}</p>
@@ -30,7 +34,7 @@ const DetailPage = () => {
           {post.reactions}
         </div>
         <div>
-          {post.tags.map((tag) => (
+          {post.tags?.map((tag) => (
             <span key={tag} style={{ marginRight: '5px' }}>
               #{tag}
             </span>

@@ -1,9 +1,16 @@
-import styles from './Settings.module.css';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { logout, selectUser } from '../Login/slices';
 import { useNavigate } from 'react-router';
-import { ROUTES } from '../../constants/routes.ts';
+
 import { Button } from '@mui/material';
+
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+
+import { logout, selectUser } from '../Login/slices';
+
+import { removeToken } from '../../api';
+
+import { ROUTES } from '../../constants/routes.ts';
+
+import styles from './Settings.module.css';
 
 const SettingsPage = () => {
   const navigate = useNavigate();
@@ -11,8 +18,11 @@ const SettingsPage = () => {
   const user = useAppSelector(selectUser);
 
   const onLogoutCLick = () => {
-    dispatch(logout());
-    navigate(ROUTES.LOGIN);
+    if (window.confirm('Are you are you want to logout?')) {
+      dispatch(logout());
+      removeToken();
+      navigate(ROUTES.LOGIN);
+    }
   };
 
   return (

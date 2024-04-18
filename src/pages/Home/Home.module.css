@@ -9,5 +9,6 @@
 
 .list {
     width: 600px;
+    padding-top: 20px;
     position: relative;
 }

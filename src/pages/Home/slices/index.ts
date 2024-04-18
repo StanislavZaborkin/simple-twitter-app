@@ -39,6 +39,9 @@ export const homeSlice = createSlice({
     getPostsError(state) {
       state.loading = false;
     },
+    clearState() {
+      return initialState;
+    },
   }),
   selectors: {
     selectPosts: (auth) => auth.posts,
@@ -53,7 +56,7 @@ export const homeSlice = createSlice({
   },
 });
 
-export const { getPostsRequest, getPostsError, getPostsSuccess } =
+export const { getPostsRequest, getPostsError, getPostsSuccess, clearState } =
   homeSlice.actions;
 
 export const { selectPosts, selectLoading, selectSkip, selectTotal } =

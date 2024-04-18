@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import clearStorage from '../../helpers/clearStorage';
+
 import {
   RequestProps,
   OmittedRequestProps,
@@ -11,10 +11,8 @@ export const setToken = (access_token: string) => {
   localStorage.setItem('token', access_token);
 };
 
-/** Gets the token from browser storage */
 export const getToken = () => localStorage.getItem('token');
 
-/** Removes the token from browser storage */
 export const removeToken = () => {
   localStorage.removeItem('token');
 };
@@ -41,10 +39,8 @@ axios.interceptors.response.use(
 
     const { status } = error.response;
     // If we get 401 error it means that token is expired,
-    // so just remove all data and redirect user to login page
-    if (status === 401 && getToken()) {
-      // clearStorage();
-      // TODO: add redirect to login page
+    // so we can add refresh token logic here
+    if (status === 401) {
       return;
     }
 
@@ -57,13 +53,11 @@ export const makeRequest = async ({
   url,
   body,
   options,
-  token: propsToken,
 }: RequestProps) => {
   const headers: Record<string, string> = {
     Accept: 'application/json',
     'Content-Type': 'application/json; charset=utf-8',
   };
-  if (propsToken) headers.Authorization = `Bearer ${propsToken}`;
   const VITE_APP_MANIFEST = import.meta.env.VITE_APP_MANIFEST;
   const BASE_URL = JSON.parse(VITE_APP_MANIFEST).BASE_API;
 
@@ -75,7 +69,6 @@ export const makeRequest = async ({
     ...options,
   });
 
-  /** Error handling */
   if (responseData.name === 'AxiosError') {
     throw new Error(responseData.response.data.details);
   }

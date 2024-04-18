@@ -2,7 +2,6 @@ export interface RequestProps {
   method: 'get' | 'post' | 'delete' | 'patch' | 'put';
   url: string;
   body?: unknown;
-  token?: string;
   options?: Record<never, never>;
 }
 
