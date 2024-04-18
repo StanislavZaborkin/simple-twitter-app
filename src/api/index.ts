@@ -59,7 +59,10 @@ export const makeRequest = async ({
     'Content-Type': 'application/json; charset=utf-8',
   };
   const VITE_APP_MANIFEST = import.meta.env.VITE_APP_MANIFEST;
-  const BASE_URL = JSON.parse(VITE_APP_MANIFEST).BASE_API;
+  if (!VITE_APP_MANIFEST) {
+    throw new Error('VITE_APP_MANIFEST was not found');
+  }
+  const BASE_URL = JSON.parse(VITE_APP_MANIFEST)?.BASE_API;
 
   const responseData: Response = await axios({
     method,
