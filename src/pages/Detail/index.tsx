@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 
-import { clearPost, getPostRequest, selectLoading, selectPost } from './slices';
+import { getPostRequest, selectLoading, selectPost } from './slices';
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
@@ -20,10 +20,6 @@ const DetailPage = () => {
     if (!id) return;
 
     dispatch(getPostRequest(+id));
-
-    return () => {
-      dispatch(clearPost());
-    };
   }, [id]);
 
   return (

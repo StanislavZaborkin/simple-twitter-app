@@ -19,6 +19,7 @@ export const detailSlice = createSlice({
   reducers: () => ({
     getPostRequest(state, _action: PayloadAction<number>) {
       state.loading = true;
+      state.post = {} as Post;
     },
     getPostSuccess(state, action: PayloadAction<Post>) {
       state.loading = false;
@@ -26,9 +27,6 @@ export const detailSlice = createSlice({
     },
     getPostError(state) {
       state.loading = false;
-    },
-    clearPost() {
-      return initialState;
     },
   }),
   selectors: {
@@ -42,7 +40,7 @@ export const detailSlice = createSlice({
   },
 });
 
-export const { getPostRequest, getPostError, getPostSuccess, clearPost } =
+export const { getPostRequest, getPostError, getPostSuccess } =
   detailSlice.actions;
 
 export const { selectLoading, selectPost } = detailSlice.selectors;
